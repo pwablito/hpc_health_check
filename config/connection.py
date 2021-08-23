@@ -4,3 +4,9 @@ class SSHConnectionConfiguration:
         self.password = password
         self.address = address
         self.port = port
+
+
+class LocalConnectionConfiguration:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
