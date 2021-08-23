@@ -25,10 +25,24 @@ def main():
 
 
 def get_configuration():
-    parser = argparse.ArgumentParser(description='Perform a health check on a remote server')
-    parser.add_argument('--address', help='The address of the remote server')
-    parser.add_argument('--username', help='The username to use when authenticating with the remote server')
-    parser.add_argument('--password', help='The password to use when authenticating with the remote server')
+    parser = argparse.ArgumentParser(
+        description='Perform a health check on a remote server'
+    )
+    parser.add_argument(
+        '--address',
+        help='The address of the remote server',
+        required=True
+    )
+    parser.add_argument(
+        '--username',
+        help='The username to use when authenticating with the remote server',
+        required=True
+    )
+    parser.add_argument(
+        '--password',
+        help='The password to use when authenticating with the remote server',
+        required=True
+    )
     return parser.parse_args()
 
 
