@@ -3,7 +3,7 @@
 import connection.ssh as ssh_connection
 import connection.local as local_connection
 import config.connection as connection_config
-import command.command as command
+import command.gpu.nvidia as nvidia_command
 import argparse
 import sys
 
@@ -27,8 +27,7 @@ def main():
             )
         )
     conn.connect()
-    cmd = command.Command("cat")
-    cmd.stdin = "hello"
+    cmd = nvidia_command.NvidiaSMICommand()
     conn.run_command(cmd)
     conn.close()
     sys.stderr.write(cmd.stderr.decode('utf-8'))
