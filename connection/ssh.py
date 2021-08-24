@@ -1,5 +1,6 @@
 import connection.connection as connection
 import error.ssh as ssh_error
+import util.totp as totp_util
 import paramiko
 
 
@@ -14,6 +15,14 @@ class SSHConnection(connection.Connection):
             raise ssh_error.NotConnectedError
 
     def connect(self):
+        if self.configuration.totp_seed:
+            def handler(_, _, _):
+                if len(fields) != 2:
+                    raise ssh_error.InvalidAuthException
+                return [self.configuration.password, totp_util.get_totp_code(self.configuration.totp_seed)]
+            transport = paramiko.Transport(self.configuration.address)  # TODO add port for non-standard connections
+            transport.connect(username=self.configuration.username)
+            transport.auth_interactive(username, handler)
         self.client = paramiko.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.client.connect(
