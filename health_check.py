@@ -2,11 +2,16 @@
 
 import connection.ssh.ssh as ssh_connection
 import connection.ssh.totp.totp as ssh_totp_connection
-import connection.local as local_connection
+import connection.local.local as local_connection
 import config.connection as connection_config
 import command.gpu.nvidia as nvidia_command
 import argparse
 import sys
+
+
+command_dict = {
+    "nvidia_smi": nvidia_command.NvidiaSMICommand(),
+}
 
 
 def main():
@@ -34,17 +39,24 @@ def main():
         else:
             conn = ssh_connection.SSHConnection(config)
     conn.connect()
-    cmd = nvidia_command.NvidiaSMICommand()
-    conn.run_command(cmd)
-    conn.close()
-    sys.stderr.write(cmd.stderr.decode('utf-8'))
-    sys.stdout.write(cmd.stdout.decode('utf-8'))
+
+    commands_to_run = []
+    all_args = "all" in args.check
+    for command_name, command in command_dict.items():
+        if all_args or command_name in args.check:
+            commands_to_run.append(command)
+    for cmd in commands_to_run:
+        conn.run_command(cmd)
+        conn.close()
+        sys.stderr.write(cmd.stderr.decode('utf-8'))
+        sys.stdout.write(cmd.stdout.decode('utf-8'))
 
 
 def get_configuration():
     parser = argparse.ArgumentParser(
         "Perform a health check on a remote server"
     )
+    parser.add_argument('--check', nargs='+', choices=['all'] + [key for key in command_dict.keys()], required=True)
     subparsers = parser.add_subparsers(dest='command', required=True)
     local_parser = subparsers.add_parser("local")
     local_parser.add_argument(
