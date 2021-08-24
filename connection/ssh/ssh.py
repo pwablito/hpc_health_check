@@ -1,5 +1,6 @@
 import connection.connection as connection
 import error.ssh as ssh_error
+import error.command as command_error
 import paramiko
 
 
@@ -28,10 +29,13 @@ class SSHConnection(connection.Connection):
         self.client.close()
 
     def run_command(self, command):
-        self.assert_client_connected()
-        stdin, stdout, stderr = self.client.exec_command(command.command)
-        if command.stdin:
-            stdin.channel.send(command.stdin)
-            stdin.channel.shutdown_write()
-        command.stdout = stdout.read()
-        command.stderr = stderr.read()
+        try:
+            self.assert_client_connected()
+            stdin, stdout, stderr = self.client.exec_command(command.command)
+            if command.stdin:
+                stdin.channel.send(command.stdin)
+                stdin.channel.shutdown_write()
+            command.stdout = stdout.read()
+            command.stderr = stderr.read()
+        except FileNotFoundError:
+            raise command_error.CommandNotFoundError

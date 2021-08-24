@@ -1,5 +1,7 @@
 import connection.connection as connection
+import error.command as command_error
 import subprocess
+import shutil
 
 
 class LocalConnection(connection.Connection):
@@ -14,8 +16,12 @@ class LocalConnection(connection.Connection):
         pass
 
     def run_command(self, command):
+        cmd_arr = command.to_array()
+        path_to_cmd = shutil.which(cmd_arr[0])
+        if not path_to_cmd:
+            raise command_error.CommandNotFoundError
         process = subprocess.Popen(
-            command.to_array(),
+            cmd_arr,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
