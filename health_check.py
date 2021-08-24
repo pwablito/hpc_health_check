@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import connection.ssh as ssh_connection
+import connection.ssh.ssh as ssh_connection
+import connection.ssh.totp.totp as ssh_totp_connection
 import connection.local as local_connection
 import config.connection as connection_config
 import command.gpu.nvidia as nvidia_command
@@ -19,13 +20,19 @@ def main():
             )
         )
     elif args.command == "ssh":
-        conn = ssh_connection.SSHConnection(
-            connection_config.SSHConnectionConfiguration(
-                args.username,
-                args.password,
-                args.address
-            )
+        config = connection_config.SSHConnectionConfiguration(
+            args.username,
+            args.password,
+            args.address
         )
+        if args.port:
+            config.port = args.port
+        if args.totp_seed:
+            config.totp_seed = args.totp_seed
+        if args.totp_seed:
+            conn = ssh_totp_connection.SSHTotpConnection(config)
+        else:
+            conn = ssh_connection.SSHConnection(config)
     conn.connect()
     cmd = nvidia_command.NvidiaSMICommand()
     conn.run_command(cmd)
