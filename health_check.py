@@ -30,8 +30,8 @@ def main():
     cmd = command.Command("whoami")
     conn.run_command(cmd)
     conn.close()
-    sys.stderr.write(cmd.stderr)
-    sys.stdout.write(cmd.stdout)
+    sys.stderr.write(cmd.stderr.decode('utf-8'))
+    sys.stdout.write(cmd.stdout.decode('utf-8'))
 
 
 def get_configuration():
