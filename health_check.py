@@ -27,7 +27,8 @@ def main():
             )
         )
     conn.connect()
-    cmd = command.Command("whoami")
+    cmd = command.Command("cat")
+    cmd.stdin = "hello"
     conn.run_command(cmd)
     conn.close()
     sys.stderr.write(cmd.stderr.decode('utf-8'))
@@ -35,7 +36,9 @@ def main():
 
 
 def get_configuration():
-    parser = argparse.ArgumentParser("Perform a health check on a remote server")
+    parser = argparse.ArgumentParser(
+        "Perform a health check on a remote server"
+    )
     subparsers = parser.add_subparsers(dest='command', required=True)
     local_parser = subparsers.add_parser("local")
     local_parser.add_argument(

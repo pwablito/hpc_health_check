@@ -14,6 +14,15 @@ class LocalConnection(connection.Connection):
         pass
 
     def run_command(self, command):
-        proc = subprocess.run(command.to_array(), capture_output=True, stdin=command.stdin)
-        command.stderr = proc.stderr
-        command.stdout = proc.stdout
+        process = subprocess.Popen(
+            command.to_array(),
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        if command.stdin:
+            process.stdin.write(command.stdin.encode('utf-8'))
+            process.stdin.close()
+        process.wait()
+        command.stdout = process.stdout.read()
+        command.stderr = process.stderr.read()
