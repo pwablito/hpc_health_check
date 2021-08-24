@@ -1,9 +1,11 @@
 class Command:
+
+    stdin = None
+    stdout = None
+    stderr = None
+
     def __init__(self, command):
         self.command = command
-        self.stdin = None
-        self.stdout = None
-        self.stderr = None
 
     def to_array(self):
         # TODO implement more parsing (quotes, etc)
