@@ -4,19 +4,15 @@ import connection.ssh.ssh as ssh_connection
 import connection.ssh.totp.totp as ssh_totp_connection
 import connection.local.local as local_connection
 import config.connection as connection_config
-import command.gpu.nvidia as nvidia_command
+import check.default as default_check
 import argparse
 import sys
-
-
-command_dict = {
-    "nvidia_smi": nvidia_command.NvidiaSMICommand(),
-}
 
 
 def main():
     args = get_configuration()
     conn = None
+    check_dict = default_check.get_default_checks()
     if args.command == "local":
         conn = local_connection.LocalConnection(
             connection_config.LocalConnectionConfiguration(
@@ -42,7 +38,7 @@ def main():
 
     commands_to_run = []
     all_args = "all" in args.check
-    for command_name, command in command_dict.items():
+    for command_name, command in check_dict.items():
         if all_args or command_name in args.check:
             commands_to_run.append(command)
     for cmd in commands_to_run:
