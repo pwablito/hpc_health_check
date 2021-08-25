@@ -10,11 +10,12 @@ class PingCheck(check.Check):
             command = ping_command.PingCommand(self.configuration.ping_address)
             self.connection.run_command(command)
             output = command.stdout.decode('utf-8')
-            time = 0  # TODO run a ping command and get the time
+            # TODO this is a very hacky way to parse the ping output
+            time = None
             for line in output.split():
                 if "time=" in line:
                     time = float(line.split("=")[1])
-            assert time
+            assert time is not None  # Make sure the time output was captured and time is not still 0
             times.append(time)
         self.result = {
             "ping": {
