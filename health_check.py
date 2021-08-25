@@ -6,13 +6,12 @@ import connection.local.local as local_connection
 import config.connection as connection_config
 import check.default as default_check
 import argparse
-import sys
+import json
 
 
 def main():
     args = get_configuration()
     conn = None
-    check_dict = default_check.get_default_checks()
     if args.command == "local":
         conn = local_connection.LocalConnection(
             connection_config.LocalConnectionConfiguration(
@@ -36,23 +35,30 @@ def main():
             conn = ssh_connection.SSHConnection(config)
     conn.connect()
 
-    commands_to_run = []
+    checks_to_run = []
     all_args = "all" in args.check
-    for command_name, command in check_dict.items():
-        if all_args or command_name in args.check:
-            commands_to_run.append(command)
-    for cmd in commands_to_run:
-        conn.run_command(cmd)
-        conn.close()
-        sys.stderr.write(cmd.stderr.decode('utf-8'))
-        sys.stdout.write(cmd.stdout.decode('utf-8'))
+    for check_name, check_dict in default_check.get_default_checks().items():
+        if all_args or check_name in args.check:
+            checks_to_run.append(check_dict)
+    check_results = []
+    for check in checks_to_run:
+        check_inst = check["check"](check["config"], conn)
+        check_inst.run()
+        check_results.append(check_inst.result)
+    if len(check_results):
+        print(json.dumps(check_results))
 
 
 def get_configuration():
     parser = argparse.ArgumentParser(
-        "Perform a health check on a remote server"
+        "Perform a health check"
     )
-    parser.add_argument('--check', nargs='+', choices=['all'] + [key for key in command_dict.keys()], required=True)
+    parser.add_argument(
+        '--check',
+        nargs='+',
+        choices=['all'] + [key for key in default_check.get_default_checks().keys()],
+        default='all'
+    )
     subparsers = parser.add_subparsers(dest='command', required=True)
     local_parser = subparsers.add_parser("local")
     local_parser.add_argument(
