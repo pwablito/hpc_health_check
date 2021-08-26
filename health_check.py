@@ -5,6 +5,7 @@ import connection.ssh.totp.totp as ssh_totp_connection
 import connection.local.local as local_connection
 import config.connection as connection_config
 import check.default as default_check
+import error.command as command_error
 import argparse
 import json
 
@@ -14,10 +15,7 @@ def main():
     conn = None
     if args.command == "local":
         conn = local_connection.LocalConnection(
-            connection_config.LocalConnectionConfiguration(
-                args.username,
-                args.password
-            )
+            connection_config.LocalConnectionConfiguration()
         )
     elif args.command == "ssh":
         config = connection_config.SSHConnectionConfiguration(
@@ -37,14 +35,17 @@ def main():
 
     checks_to_run = []
     all_args = "all" in args.check
-    for check_name, check_dict in default_check.get_default_checks().items():
-        if all_args or check_name in args.check:
+    for check_dict in default_check.get_default_checks():
+        if all_args or check_dict['name'] in args.check:
             checks_to_run.append(check_dict)
     check_results = []
     for check in checks_to_run:
         check_inst = check["check"](check["config"], conn)
-        check_inst.run()
-        check_results.append(check_inst.result)
+        try:
+            check_inst.run()
+            check_results.append({"name": check["name"], "result": check_inst.result})
+        except command_error.CommandNotFoundError:
+            check_results.append({"name": check["name"], "result": {"error": "Command not found"}})
     if len(check_results):
         print(json.dumps(check_results))
 
@@ -56,21 +57,11 @@ def get_configuration():
     parser.add_argument(
         '--check',
         nargs='+',
-        choices=['all'] + [key for key in default_check.get_default_checks().keys()],
+        choices=['all'] + [check_dict["name"] for check_dict in default_check.get_default_checks()],
         default='all'
     )
     subparsers = parser.add_subparsers(dest='command', required=True)
-    local_parser = subparsers.add_parser("local")
-    local_parser.add_argument(
-        "--username",
-        help="The user to run commands as",
-        required=True
-    )
-    local_parser.add_argument(
-        '--password',
-        help='The password for provided user',
-        required=False  # Not always needed, so not required
-    )
+    subparsers.add_parser("local")
     ssh_parser = subparsers.add_parser("ssh")
     ssh_parser.add_argument(
         '--address',

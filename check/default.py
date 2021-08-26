@@ -5,13 +5,15 @@ import config.check.net.ping as ping_check_config
 
 
 def get_default_checks():
-    return {
-        'nvidia': {
+    return [
+        {
+            "name": "nvidia",
             "check": nvidia_check.NvidiaCheck,
             "config": nvidia_check_config.NvidiaCheckConfiguration()
         },
-        'ping': {
+        {
+            "name": "ping",
             "check": ping_check.PingCheck,
             "config": ping_check_config.PingCheckConfiguration(50, "google.com")
         }
-    }
+    ]
