@@ -2,6 +2,10 @@ import check.gpu.nvidia as nvidia_check
 import config.check.gpu.nvidia as nvidia_check_config
 import check.net.ping as ping_check
 import config.check.net.ping as ping_check_config
+import check.disk.read as read_check
+import config.check.disk.read as read_check_config
+import check.disk.write as write_check
+import config.check.disk.write as write_check_config
 
 
 def get_default_checks():
@@ -15,5 +19,15 @@ def get_default_checks():
             "name": "ping",
             "check": ping_check.PingCheck,
             "config": ping_check_config.PingCheckConfiguration(50, "google.com")
+        },
+        {
+            "name": "disk_read",
+            "check": read_check.ReadCheck,
+            "config": read_check_config.ReadCheckConfiguration(16, 256, 16, 30)
+        },
+        {
+            "name": "disk_write",
+            "check": write_check.WriteCheck,
+            "config": write_check_config.WriteCheckConfiguration(16, 256, 16, 30)
         }
     ]
