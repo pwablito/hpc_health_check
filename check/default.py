@@ -18,7 +18,7 @@ def get_default_checks():
         {
             "name": "ping",
             "check": ping_check.PingCheck,
-            "config": ping_check_config.PingCheckConfiguration(50, "google.com")
+            "config": ping_check_config.PingCheckConfiguration(5, "google.com")
         },
         {
             "name": "disk_read",

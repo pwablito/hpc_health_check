@@ -20,6 +20,7 @@ class PingCheck(check.Check):
         self.result = {
             "ping": {
                 "times": times,
-                "average": math_util.mean(times)
+                "average": math_util.mean(times),
+                "target": self.configuration.ping_address
             }
         }
