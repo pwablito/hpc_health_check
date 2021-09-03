@@ -8,6 +8,7 @@ import check.default as default_check
 import error.command as command_error
 import argparse
 import json
+import logging
 
 
 def main():
@@ -42,6 +43,7 @@ def main():
     for check in checks_to_run:
         check_inst = check["check"](check["config"], conn)
         try:
+            logging.info("Running check {}".format(check["name"]))
             check_inst.run()
             check_results.append({"name": check["name"], "result": check_inst.result})
         except command_error.CommandNotFoundError:

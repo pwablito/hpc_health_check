@@ -23,11 +23,11 @@ def get_default_checks():
         {
             "name": "disk_read",
             "check": read_check.ReadCheck,
-            "config": read_check_config.ReadCheckConfiguration(16, 256, 16, 30)
+            "config": read_check_config.ReadCheckConfiguration(16, 256, 16, 5)
         },
         {
             "name": "disk_write",
             "check": write_check.WriteCheck,
-            "config": write_check_config.WriteCheckConfiguration(16, 256, 16, 30)
+            "config": write_check_config.WriteCheckConfiguration(16, 256, 16, 5)
         }
     ]
