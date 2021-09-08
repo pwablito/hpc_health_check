@@ -6,15 +6,19 @@ import connection.local.local as local_connection
 import config.connection.connection as connection_config
 import check.default as default_check
 import error.command as command_error
-import argparse
+import tests.test
+import config.args as args_config
 import json
 import logging
 
 
 def main():
-    args = get_configuration()
+    args = args_config.get_configuration()
     conn = None
-    if args.command == "local":
+    if args.command == "test":
+        tests.test.run_tests()
+        return
+    elif args.command == "local":
         conn = local_connection.LocalConnection(
             connection_config.LocalConnectionConfiguration()
         )
@@ -66,40 +70,6 @@ def main():
             })
     if len(check_results):
         print(json.dumps(check_results))
-
-
-def get_configuration():
-    parser = argparse.ArgumentParser(
-        "Perform a health check"
-    )
-    parser.add_argument(
-        '--check',
-        nargs='+',
-        choices=['all'] + [
-            check_dict["name"]
-            for check_dict in default_check.get_default_checks()
-        ],
-        default='all'
-    )
-    subparsers = parser.add_subparsers(dest='command', required=True)
-    subparsers.add_parser("local")
-    ssh_parser = subparsers.add_parser("ssh")
-    ssh_parser.add_argument(
-        '--address',
-        help='The address of the remote server',
-        required=True
-    )
-    ssh_parser.add_argument(
-        '--username',
-        help='The username to use when authenticating with the remote server',
-        required=True
-    )
-    ssh_parser.add_argument(
-        '--password',
-        help='The password to use when authenticating with the remote server',
-        required=False  # Not always needed, so not required
-    )
-    return parser.parse_args()
 
 
 if __name__ == "__main__":
