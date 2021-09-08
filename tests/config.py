@@ -2,6 +2,7 @@ import unittest
 import config.file
 import check.disk.read
 import config.check.disk.read as read_check_config
+import error.config
 
 
 class ConfigFileTestCase(unittest.TestCase):
@@ -16,7 +17,7 @@ class ConfigFileTestCase(unittest.TestCase):
                 }
             ]
         }, config.file.valid_config)
-        with self.assertRaises(Exception):
+        with self.assertRaises(error.config.InvalidConfigurationException):
             config.file.validate_config_dict({
                 "connections": [],
                 "checks": [
@@ -26,4 +27,14 @@ class ConfigFileTestCase(unittest.TestCase):
                         "invalid_key": "invalid"
                     }
                 ]
-            })
+            }, config.file.valid_config)
+        with self.assertRaises(error.config.MissingConfigurationException):
+            config.file.validate_config_dict({
+                "connections": [],
+                "checks": [
+                    {
+                        "name": "test",
+                        "check": check.disk.read.ReadCheck
+                    }
+                ]
+            }, config.file.valid_config)

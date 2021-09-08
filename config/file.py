@@ -2,6 +2,7 @@ import check.check
 import config.check.check
 import config.connection
 import connection.connection
+import error.config
 import json
 import logging
 
@@ -42,20 +43,22 @@ def validate_config_dict(config_dict, valid_config_dict):
     logging.info('Validating configuration')
     checked_keys = []
     for key in config_dict.keys():
-        validate_config_item(config_dict[key], valid_config_dict[key])
-        checked_keys.append(key)
+        try:
+            valid_key = valid_config_dict[key]
+            validate_config_item(config_dict[key], valid_key)
+            checked_keys.append(key)
+        except KeyError:
+            raise error.config.InvalidConfigurationException
     for key in valid_config_dict.keys():
         if key not in checked_keys:
-            raise Exception('Missing configuration value: {}'.format(key))
+            raise error.config.MissingConfigurationException
 
 
 def validate_config_item(config_item, valid_config_item):
     if isinstance(config_item, type(valid_config_item)):
         pass
     elif not isinstance(config_item, valid_config_item):
-        raise Exception('Invalid configuration value: {}. Expected {}'.format(
-            config_item, valid_config_item
-        ))
+        raise error.config.InvalidConfigurationException
     if type(valid_config_item) == list:
         validate_config_list(config_item, valid_config_item)
     if type(valid_config_item) == dict:
