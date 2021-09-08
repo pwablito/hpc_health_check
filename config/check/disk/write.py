@@ -1,4 +1,7 @@
-class WriteCheckConfiguration:
+import config.check.check
+
+
+class WriteCheckConfiguration(config.check.check.CheckConfiguration):
 
     working_dir = "/tmp"
 

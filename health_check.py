@@ -3,7 +3,7 @@
 import connection.ssh.ssh as ssh_connection
 import connection.ssh.totp.totp as ssh_totp_connection
 import connection.local.local as local_connection
-import config.connection as connection_config
+import config.connection.connection as connection_config
 import check.default as default_check
 import error.command as command_error
 import argparse

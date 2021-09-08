@@ -1,4 +1,8 @@
-class SSHConnectionConfiguration:
+class ConnectionConfiguration:
+    pass
+
+
+class SSHConnectionConfiguration(ConnectionConfiguration):
     def __init__(self, username, password, address, port=22, totp_seed=None):
         self.username = username
         self.password = password
@@ -7,5 +11,6 @@ class SSHConnectionConfiguration:
         self.totp_seed = totp_seed
 
 
-class LocalConnectionConfiguration:
+class LocalConnectionConfiguration(ConnectionConfiguration):
+    # TODO add support for running as another user, etc
     pass
