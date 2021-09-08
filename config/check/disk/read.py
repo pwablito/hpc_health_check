@@ -1,4 +1,7 @@
-class ReadCheckConfiguration:
+import config.check.check
+
+
+class ReadCheckConfiguration(config.check.check.CheckConfiguration):
 
     working_dir = "/tmp"
 

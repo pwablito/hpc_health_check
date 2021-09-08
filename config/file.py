@@ -51,9 +51,11 @@ def validate_config_dict(config_dict, valid_config_dict):
 
 def validate_config_item(config_item, valid_config_item):
     if isinstance(config_item, type(valid_config_item)):
-        return
-    elif not isinstance(valid_config_item, valid_config_item):
-        raise Exception('Invalid configuration value: {}'.format(config_item))
+        pass
+    elif not isinstance(config_item, valid_config_item):
+        raise Exception('Invalid configuration value: {}. Expected {}'.format(
+            config_item, valid_config_item
+        ))
     if type(valid_config_item) == list:
         validate_config_list(config_item, valid_config_item)
     if type(valid_config_item) == dict:
