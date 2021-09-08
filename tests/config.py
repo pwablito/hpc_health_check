@@ -13,7 +13,9 @@ class ConfigFileTestCase(unittest.TestCase):
                 {
                     "name": "test",
                     "check": check.disk.read.ReadCheck,
-                    "config": read_check_config.ReadCheckConfiguration(16, 256, 16, 5)
+                    "config": read_check_config.ReadCheckConfiguration(
+                        16, 256, 16, 5
+                    )
                 }
             ]
         }, config.file.valid_config)
