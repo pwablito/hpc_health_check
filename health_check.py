@@ -45,13 +45,25 @@ def main():
         try:
             logging.info("Running check {}".format(check["name"]))
             check_inst.run()
-            check_results.append({"name": check["name"], "result": check_inst.result})
+            check_results.append({
+                "name": check["name"],
+                "result": check_inst.result
+            })
         except command_error.CommandNotFoundError:
-            check_results.append({"name": check["name"], "result": {"error": "Command not found"}})
+            check_results.append({
+                "name": check["name"],
+                "result": {"error": "Command not found"}
+            })
         except NotImplementedError:
-            check_results.append({"name": check["name"], "result": {"error": "Check not fully implemented"}})
+            check_results.append({
+                "name": check["name"],
+                "result": {"error": "Check not fully implemented"}
+            })
         except command_error.CommandNotFoundError:
-            check_results.append({"name": check["name"], "result": {"error": "Something went wrong"}})
+            check_results.append({
+                "name": check["name"],
+                "result": {"error": "Something went wrong"}
+            })
     if len(check_results):
         print(json.dumps(check_results))
 
@@ -63,7 +75,10 @@ def get_configuration():
     parser.add_argument(
         '--check',
         nargs='+',
-        choices=['all'] + [check_dict["name"] for check_dict in default_check.get_default_checks()],
+        choices=['all'] + [
+            check_dict["name"]
+            for check_dict in default_check.get_default_checks()
+        ],
         default='all'
     )
     subparsers = parser.add_subparsers(dest='command', required=True)

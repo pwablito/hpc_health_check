@@ -28,6 +28,8 @@ def get_default_checks():
         {
             "name": "disk_write",
             "check": write_check.WriteCheck,
-            "config": write_check_config.WriteCheckConfiguration(16, 256, 16, 5)
+            "config": write_check_config.WriteCheckConfiguration(
+                16, 256, 16, 5
+            )
         }
     ]

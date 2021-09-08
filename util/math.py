@@ -1,5 +1,5 @@
-def mean(l):
+def mean(numbers):
     sum = 0
-    for i in l:
+    for i in numbers:
         sum += i
-    return sum / len(l)
+    return sum / len(numbers)

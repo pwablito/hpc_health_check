@@ -15,7 +15,8 @@ class PingCheck(check.Check):
             for line in output.split():
                 if "time=" in line:
                     time = float(line.split("=")[1])
-            assert time is not None  # Make sure the time output was captured and time is not still 0
+            # Make sure the time output was captured and time is not still 0
+            assert time is not None
             times.append(time)
         self.result = {
             "ping": {

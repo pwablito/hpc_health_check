@@ -9,9 +9,15 @@ class SSHTOTPConnection(ssh_connection.SSHConnection):
         def handler(_, __, fields):
             if len(fields) != 2:
                 raise ssh_error.InvalidAuthException
-            return [self.configuration.password, totp_util.get_totp_code(self.configuration.totp_seed)]
-        transport = paramiko.Transport((self.configuration.address, self.configuration.port))
+            return [
+                self.configuration.password,
+                totp_util.get_totp_code(self.configuration.totp_seed)
+            ]
+        transport = paramiko.Transport(
+            (self.configuration.address, self.configuration.port)
+        )
         transport.connect(username=self.configuration.username)
         transport.auth_interactive(self.configuration.username, handler)
         self.client = paramiko.SSHClient()
-        self.client._transport = transport  # PR #1899 in https://github.com/paramiko/paramiko makes this easier
+        # PR #1899 in https://github.com/paramiko/paramiko makes this easier
+        self.client._transport = transport
