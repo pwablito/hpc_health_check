@@ -40,19 +40,23 @@ def validate_config_list(config_list, valid_config_list):
 
 def validate_config_dict(config_dict, valid_config_dict):
     logging.info('Validating configuration')
+    checked_keys = []
     for key in config_dict.keys():
         validate_config_item(config_dict[key], valid_config_dict[key])
+        checked_keys.append(key)
+    for key in valid_config_dict.keys():
+        if key not in checked_keys:
+            raise Exception('Missing configuration value: {}'.format(key))
 
 
 def validate_config_item(config_item, valid_config_item):
-    valid_type = valid_config_item
-    if not isinstance(valid_type, type):
-        valid_type = type(valid_type)
-    if not isinstance(config_item, valid_type):
+    if isinstance(config_item, type(valid_config_item)) or isinstance(valid_config_item, valid_config_item):
+        return
+    else:
         raise Exception('Invalid configuration value: {}'.format(config_item))
-    if valid_type == list:
+    if type(valid_config_item) == list:
         validate_config_list(config_item, valid_config_item)
-    if valid_type == dict:
+    if type(valid_config_item) == dict:
         validate_config_dict(config_item, valid_config_item)
 
 

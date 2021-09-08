@@ -1,5 +1,6 @@
 import unittest
 import config.file
+import check.disk.read
 
 
 class ConfigFileTestCase(unittest.TestCase):
@@ -7,7 +8,10 @@ class ConfigFileTestCase(unittest.TestCase):
         config_dict = {
             "connections": [],
             "checks": [
-                {}
+                {
+                    "name": "test",
+                    "check": check.disk.read.ReadCheck,
+                }
             ]
         }
         config.file.validate_config_dict(config_dict, config.file.valid_config)
