@@ -63,11 +63,6 @@ def main():
                 "name": check["name"],
                 "result": {"error": "Check not fully implemented"}
             })
-        except command_error.CommandNotFoundError:
-            check_results.append({
-                "name": check["name"],
-                "result": {"error": "Something went wrong"}
-            })
     if len(check_results):
         print(json.dumps(check_results))
 
