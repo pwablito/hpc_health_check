@@ -5,6 +5,7 @@ import connection.connection
 import error.config
 import json
 import logging
+import importlib
 
 
 valid_config = {
@@ -69,3 +70,12 @@ def get_config(config_file_path):
     config_dict = get_config_dict(config_file_path)
     logging.info('Config file contents: {}'.format(json.dumps(config_dict)))
     validate_config_dict(config_dict, valid_config)
+
+
+def get_class(string):
+    try:
+        module_path, class_name = string.rsplit('.', 1)
+        module = importlib.import_module(module_path)
+        return getattr(module, class_name)
+    except ValueError:
+        raise ImportError
