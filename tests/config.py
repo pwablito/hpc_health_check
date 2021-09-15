@@ -40,3 +40,14 @@ class ConfigFileTestCase(unittest.TestCase):
                     }
                 ]
             }, config.file.valid_config)
+        with self.assertRaises(error.config.InvalidConfigurationException):
+            config.file.validate_config_dict({
+                "connections": [],
+                "checks": [
+                    {
+                        "name": "test",
+                        "check": check.disk.read.ReadCheck,
+                        "config": "invalid_config_value"
+                    }
+                ]
+            }, config.file.valid_config)
