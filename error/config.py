@@ -8,3 +8,7 @@ class MissingConfigurationException(ConfigurationException):
 
 class InvalidConfigurationException(ConfigurationException):
     pass
+
+
+class UnsupportedConfigurationTypeException(ConfigurationException):
+    pass

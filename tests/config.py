@@ -2,6 +2,7 @@ import unittest
 import config.file
 import check.disk.read
 import config.check.disk.read as read_check_config
+import config.check.net.ping
 import error.config
 
 
@@ -51,3 +52,16 @@ class ConfigFileTestCase(unittest.TestCase):
                     }
                 ]
             }, config.file.valid_config)
+
+    def test_load(self):
+        raise NotImplementedError
+
+    def test_load_object_from_string(self):
+        self.assertEquals(
+            config.file.load_object_from_string("config.check.net.ping.PingCheckConfiguration"),
+            config.check.net.ping.PingCheckConfiguration
+        )
+        self.assertEquals(
+            config.file.load_object_from_string('config.check.net.ping.PingCheckConfiguration(1, "test")'),
+            config.check.net.ping.PingCheckConfiguration(1, "test")
+        )
