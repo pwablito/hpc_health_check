@@ -6,7 +6,7 @@ import connection.local.local as local_connection
 import config.connection.connection as connection_config
 import check.default as default_check
 import error.command as command_error
-import tests.test
+import tests.test as test
 import config.args as args_config
 import json
 import logging
@@ -16,8 +16,7 @@ def main():
     args = args_config.get_configuration()
     conn = None
     if args.command == "test":
-        tests.test.run_tests()
-        return
+        test.run_tests()
     elif args.command == "local":
         conn = local_connection.LocalConnection(
             connection_config.LocalConnectionConfiguration()

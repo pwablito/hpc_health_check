@@ -1,9 +1,9 @@
 import unittest
-import tests.config
+
+# Any tests imported here will be run
+from tests.config import ConfigFileTestCase  # noqa
+# End imports
 
 
 def run_tests():
-    # TODO Figure out how to combine test suites
-    unittest.TextTestRunner().run(
-        unittest.TestLoader().loadTestsFromModule(tests.config)
-    )
+    unittest.main()

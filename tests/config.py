@@ -58,10 +58,14 @@ class ConfigFileTestCase(unittest.TestCase):
 
     def test_load_object_from_string(self):
         self.assertEquals(
-            config.file.load_object_from_string("config.check.net.ping.PingCheckConfiguration"),
+            config.file.load_object_from_string(
+                'config.check.net.ping.PingCheckConfiguration'
+            ),
             config.check.net.ping.PingCheckConfiguration
         )
         self.assertEquals(
-            config.file.load_object_from_string('config.check.net.ping.PingCheckConfiguration(1, "test")'),
+            config.file.load_object_from_string(
+                'config.check.net.ping.PingCheckConfiguration(1, "test")'
+            ),
             config.check.net.ping.PingCheckConfiguration(1, "test")
         )
