@@ -5,8 +5,6 @@ import connection.connection
 import error.config
 import json
 import logging
-import importlib
-import re
 
 
 valid_config = {
@@ -71,29 +69,3 @@ def get_config(config_file_path):
     config_dict = get_config_dict(config_file_path)
     logging.info('Config file contents: {}'.format(json.dumps(config_dict)))
     validate_config_dict(config_dict, valid_config)
-
-
-def get_class_from_string(input_string):
-    try:
-        module_path, class_name = input_string.rsplit('.', 1)
-        module = importlib.import_module(module_path)
-        return getattr(module, class_name)
-    except ValueError:
-        raise ImportError
-
-
-def get_arguments_from_string(input_string):
-    match = re.match(r'.*\((\".*\")(,\w*(\".*\"))*\)', input_string)
-    if match is not None:
-        # TODO implement this- should pull both int and str args from string
-        raise NotImplementedError
-    return None
-
-
-def load_object_from_string(input_str):
-    # TODO Add validation that it is valid python syntax first
-    class_type = get_class_from_string(input_str)
-    args = get_arguments_from_string(input_str)
-    if args is None:
-        return class_type
-    return class_type(*args)

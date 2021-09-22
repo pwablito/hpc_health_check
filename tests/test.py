@@ -1,7 +1,6 @@
 import unittest
-
 # Any tests imported here will be run
-from tests.config import ConfigFileTestCase  # noqa
+from tests.tests.config import *  # noqa
 # End imports
 
 
