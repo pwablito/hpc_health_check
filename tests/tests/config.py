@@ -63,9 +63,8 @@ class ConfigParserTestCase(unittest.TestCase):
             ),
             config.check.net.ping.PingCheckConfiguration
         )
-        self.assertEqual(
-            config.parser.load_object_from_string(
-                'config.check.net.ping.PingCheckConfiguration(1, "test")'
-            ),
-            config.check.net.ping.PingCheckConfiguration(1, "test")
+        obj = config.check.net.ping.PingCheckConfiguration(1, "test")
+        test_obj = config.parser.load_object_from_string(
+            'config.check.net.ping.PingCheckConfiguration(1, "test")'
         )
+        self.assertEqual(obj, test_obj)
