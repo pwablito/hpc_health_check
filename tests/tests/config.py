@@ -8,7 +8,7 @@ import error.config
 
 
 class ConfigFileTestCase(unittest.TestCase):
-    def test_validate(self):
+    def test_validate_config(self):
         config.file.validate_config_dict({
             "connections": [],
             "checks": [
@@ -68,3 +68,18 @@ class ConfigParserTestCase(unittest.TestCase):
             'config.check.net.ping.PingCheckConfiguration(1, "test")'
         )
         self.assertEqual(obj, test_obj)
+
+    def test_load_config_from_string(self):
+        raw_config = {
+            "connections": [],
+            "checks": [
+                {
+                    "name": "test",
+                    "check": "check.disk.read.ReadCheck",
+                    "config": "read_check_config.ReadCheckConfiguration(16, 256, 16, 5)"
+                }
+            ]
+        }
+        typed_config = config.parser.expand_config_types(raw_config)
+        assert(typed_config["checks"][0]["check"] == check.disk.read.ReadCheck)
+        assert(type(typed_config["checks"][0]["config"]) == read_check_config.ReadCheckConfiguration)

@@ -35,3 +35,27 @@ def load_object_from_string(input_str):
     if args is None:
         return class_type
     return class_type(*tuple(args))
+
+
+def expand_dict_types(input_dict):
+    return {key: expand_item_type(value) for key, value in input_dict.items()}
+
+
+def expand_list_types(input_list):
+    return [expand_item_type(item) for item in input_list]
+
+
+def expand_item_type(input_item):
+    if type(input_item) == list:
+        return expand_list_types(input_item)
+    elif type(input_item) == dict:
+        return expand_dict_types(input_item)
+    try:
+        item = load_object_from_string(input_item)
+        return item
+    except Exception:
+        return input_item
+
+
+def expand_config_types(input_obj):
+    return expand_item_type(input_obj)
