@@ -8,6 +8,8 @@ def get_configuration():
     )
     subparsers = parser.add_subparsers(dest='command', required=True)
     subparsers.add_parser("test")
+    file_parser = subparsers.add_parser("file")
+    file_parser.add_argument("filename", type=str)
     local_parser = subparsers.add_parser("local")
     add_check_arg(local_parser)
     ssh_parser = subparsers.add_parser("ssh")

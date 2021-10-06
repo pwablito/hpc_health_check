@@ -3,12 +3,11 @@ class ConnectionConfiguration:
 
 
 class SSHConnectionConfiguration(ConnectionConfiguration):
-    def __init__(self, username, password, address, port=22, totp_seed=None):
+    def __init__(self, username, password, address):
+        # TODO add support to TOTP seeds and custom ports
         self.username = username
         self.password = password
         self.address = address
-        self.port = port
-        self.totp_seed = totp_seed
 
 
 class LocalConnectionConfiguration(ConnectionConfiguration):

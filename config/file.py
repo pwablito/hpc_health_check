@@ -3,6 +3,7 @@ import config.check.check
 import config.connection
 import connection.connection
 import error.config
+import config.parser
 import json
 import logging
 
@@ -68,4 +69,6 @@ def validate_config_item(config_item, valid_config_item):
 def get_config(config_file_path):
     config_dict = get_config_dict(config_file_path)
     logging.info('Config file contents: {}'.format(json.dumps(config_dict)))
-    validate_config_dict(config_dict, valid_config)
+    typed_config = config.parser.expand_config_types(config_dict)
+    validate_config_dict(typed_config, valid_config)
+    return typed_config
