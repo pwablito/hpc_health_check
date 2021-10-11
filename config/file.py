@@ -59,7 +59,11 @@ def validate_config_item(config_item, valid_config_item):
     if isinstance(config_item, type(valid_config_item)):
         pass
     elif not isinstance(config_item, valid_config_item):
-        raise error.config.InvalidConfigurationException
+        raise error.config.InvalidConfigurationException(
+            "Got {}, expected {}".format(
+                config_item, valid_config_item
+            )
+        )
     if type(valid_config_item) == list:
         validate_config_list(config_item, valid_config_item)
     if type(valid_config_item) == dict:
