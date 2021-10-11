@@ -3,6 +3,7 @@ import config.file
 import check.disk.read
 import config.check.disk.read as read_check_config
 import config.check.net.ping
+import config.connection.connection
 import config.parser
 import error.config
 
@@ -10,7 +11,10 @@ import error.config
 class ConfigFileTestCase(unittest.TestCase):
     def test_validate_config(self):
         config.file.validate_config_dict({
-            "connections": [],
+            "connections": [{
+                "type": "connection.local.local.LocalConnection",
+                "config": "config.connection.connection.LocalConnectionConfiguration()"
+            }],
             "checks": [
                 {
                     "name": "test",
@@ -23,7 +27,10 @@ class ConfigFileTestCase(unittest.TestCase):
         }, config.file.valid_config)
         with self.assertRaises(error.config.InvalidConfigurationException):
             config.file.validate_config_dict({
-                "connections": [],
+                "connections": [{
+                    "type": "connection.local.local.LocalConnection",
+                    "config": "config.connection.connection.LocalConnectionConfiguration()"
+                }],
                 "checks": [
                     {
                         "name": "test",
@@ -34,7 +41,10 @@ class ConfigFileTestCase(unittest.TestCase):
             }, config.file.valid_config)
         with self.assertRaises(error.config.MissingConfigurationException):
             config.file.validate_config_dict({
-                "connections": [],
+                "connections": [{
+                    "type": "connection.local.local.LocalConnection",
+                    "config": "config.connection.connection.LocalConnectionConfiguration()"
+                }],
                 "checks": [
                     {
                         "name": "test",
@@ -44,7 +54,10 @@ class ConfigFileTestCase(unittest.TestCase):
             }, config.file.valid_config)
         with self.assertRaises(error.config.InvalidConfigurationException):
             config.file.validate_config_dict({
-                "connections": [],
+                "connections": [{
+                    "type": "connection.local.local.LocalConnection",
+                    "config": "config.connection.connection.LocalConnectionConfiguration()"
+                }],
                 "checks": [
                     {
                         "name": "test",
@@ -71,7 +84,10 @@ class ConfigParserTestCase(unittest.TestCase):
 
     def test_load_config_from_string(self):
         raw_config = {
-            "connections": [],
+            "connections": [{
+                "type": "connection.local.local.LocalConnection",
+                "config": "config.connection.connection.LocalConnectionConfiguration()"
+            }],
             "checks": [
                 {
                     "name": "test",
@@ -83,3 +99,4 @@ class ConfigParserTestCase(unittest.TestCase):
         typed_config = config.parser.expand_config_types(raw_config)
         assert(typed_config["checks"][0]["check"] == check.disk.read.ReadCheck)
         assert(type(typed_config["checks"][0]["config"]) == read_check_config.ReadCheckConfiguration)
+        assert(type(typed_config["connections"][0]["config"]) == config.connection.connection.LocalConnectionConfiguration)
