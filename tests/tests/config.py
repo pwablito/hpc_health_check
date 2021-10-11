@@ -13,7 +13,7 @@ class ConfigFileTestCase(unittest.TestCase):
         config.file.validate_config_dict({
             "connections": [{
                 "type": "connection.local.local.LocalConnection",
-                "config": "config.connection.connection.LocalConnectionConfiguration()"
+                "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
             }],
             "checks": [
                 {
@@ -29,7 +29,7 @@ class ConfigFileTestCase(unittest.TestCase):
             config.file.validate_config_dict({
                 "connections": [{
                     "type": "connection.local.local.LocalConnection",
-                    "config": "config.connection.connection.LocalConnectionConfiguration()"
+                    "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
                 }],
                 "checks": [
                     {
@@ -43,7 +43,7 @@ class ConfigFileTestCase(unittest.TestCase):
             config.file.validate_config_dict({
                 "connections": [{
                     "type": "connection.local.local.LocalConnection",
-                    "config": "config.connection.connection.LocalConnectionConfiguration()"
+                    "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
                 }],
                 "checks": [
                     {
@@ -56,7 +56,7 @@ class ConfigFileTestCase(unittest.TestCase):
             config.file.validate_config_dict({
                 "connections": [{
                     "type": "connection.local.local.LocalConnection",
-                    "config": "config.connection.connection.LocalConnectionConfiguration()"
+                    "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
                 }],
                 "checks": [
                     {
@@ -86,17 +86,23 @@ class ConfigParserTestCase(unittest.TestCase):
         raw_config = {
             "connections": [{
                 "type": "connection.local.local.LocalConnection",
-                "config": "config.connection.connection.LocalConnectionConfiguration()"
+                "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
             }],
             "checks": [
                 {
                     "name": "test",
                     "check": "check.disk.read.ReadCheck",
-                    "config": "config.check.disk.read.ReadCheckConfiguration(16, 256, 16, 5)"
+                    "config": "config.check.disk.read.ReadCheckConfiguration(16, 256, 16, 5)"  # noqa: E501
                 }
             ]
         }
         typed_config = config.parser.expand_config_types(raw_config)
         assert(typed_config["checks"][0]["check"] == check.disk.read.ReadCheck)
-        assert(type(typed_config["checks"][0]["config"]) == read_check_config.ReadCheckConfiguration)
-        assert(type(typed_config["connections"][0]["config"]) == config.connection.connection.LocalConnectionConfiguration)
+        assert(
+            type(typed_config["checks"][0]["config"]) ==
+            read_check_config.ReadCheckConfiguration
+        )
+        assert(
+            type(typed_config["connections"][0]["config"]) ==
+            config.connection.connection.LocalConnectionConfiguration
+        )  # noqa: E501

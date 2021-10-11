@@ -16,7 +16,7 @@ import logging
 def main():
     args = args_config.get_configuration()
     if args.command == "test":
-        # The following line calls sys.exit on completion (whether successful or not)
+        # The following line calls sys.exit on completion (whether successful or not)  # noqa: E501
         test.run_tests()
     checks = []
     connections = []
