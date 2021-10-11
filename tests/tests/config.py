@@ -105,4 +105,4 @@ class ConfigParserTestCase(unittest.TestCase):
         assert(
             type(typed_config["connections"][0]["config"]) ==
             config.connection.connection.LocalConnectionConfiguration
-        )  # noqa: E501
+        )
