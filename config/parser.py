@@ -24,6 +24,8 @@ def get_arguments_from_string(input_string):
     if len(all_args) == 1:
         return None
     all_args = all_args[1].strip(')')
+    if all_args == '':
+        return []
     items = [process_item(item.strip()) for item in all_args.split(',')]
     return items if len(items) > 0 else None
 

@@ -8,6 +8,8 @@ class SSHConnectionConfiguration(ConnectionConfiguration):
         self.username = username
         self.password = password
         self.address = address
+        # TODO make this configurable
+        self.port = 22
 
 
 class LocalConnectionConfiguration(ConnectionConfiguration):

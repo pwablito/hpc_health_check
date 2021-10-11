@@ -23,7 +23,10 @@ def main():
     if args.command == "file":
         config_dict = config_file.get_config(args.filename)
         checks = config_dict["checks"]
-        connections = config_dict["connections"]
+        connections = [
+            item["type"](item["config"]) for item
+            in config_dict["connections"]
+        ]
     else:
         if args.command == "local":
             connections.append(
@@ -53,25 +56,28 @@ def main():
             if all_args or check_dict['name'] in args.check:
                 checks.append(check_dict)
     check_results = []
+    for conn in connections:
+        conn.connect()
     for check in checks:
-        check_inst = check["check"](check["config"], conn)
-        try:
-            logging.info("Running check {}".format(check["name"]))
-            check_inst.run()
-            check_results.append({
-                "name": check["name"],
-                "result": check_inst.result
-            })
-        except command_error.CommandNotFoundError:
-            check_results.append({
-                "name": check["name"],
-                "result": {"error": "Command not found"}
-            })
-        except NotImplementedError:
-            check_results.append({
-                "name": check["name"],
-                "result": {"error": "Check not fully implemented"}
-            })
+        for conn in connections:
+            check_inst = check["check"](check["config"], conn)
+            try:
+                logging.info("Running check {}".format(check["name"]))
+                check_inst.run()
+                check_results.append({
+                    "name": check["name"],
+                    "result": check_inst.result
+                })
+            except command_error.CommandNotFoundError:
+                check_results.append({
+                    "name": check["name"],
+                    "result": {"error": "Command not found"}
+                })
+            except NotImplementedError:
+                check_results.append({
+                    "name": check["name"],
+                    "result": {"error": "Check not fully implemented"}
+                })
     if len(check_results):
         print(json.dumps(check_results))
 
