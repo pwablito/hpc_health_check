@@ -2,4 +2,4 @@
 
 A system for checking the health of HPC clusters.
 
-Author: Paul Spencer & Joseph du Toit
+Author: [Paul Spencer](https://github.com/pwablito) & [Joseph du Toit](https://github.com/jcdutoit)
