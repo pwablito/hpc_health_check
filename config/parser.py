@@ -1,4 +1,5 @@
 import importlib
+import re
 
 
 def get_class_from_string(input_string):
@@ -61,3 +62,38 @@ def expand_item_type(input_item):
 
 def expand_config_types(input_obj):
     return expand_item_type(input_obj)
+
+
+def is_address_string_expanded(input_str):
+    return not re.match(r'.*\[\d+-\d+\].*', input_str)
+
+
+def expand_address_string(input_str):
+    if is_address_string_expanded(input_str):
+        return input_str
+    left_pieces = input_str.split('[')
+    left_pieces = [left_pieces[0], "[".join(left_pieces[1:])]
+    before = left_pieces[0]
+    right_pieces = left_pieces[1].split(']')
+    right_pieces = [right_pieces[0], "]".join(right_pieces[1:])]
+    range_spec = right_pieces[0]
+    after = right_pieces[1]
+    start, end = range_spec.split('-')
+    new_addresses = [
+        before + str(i) + after for i in range(int(start), int(end) + 1)
+    ]
+    return [expand_address_string(addr) for addr in new_addresses]
+
+
+def expand_address_glob(addr_glob):
+    return flatten_multidimensional_arr(expand_address_string(addr_glob))
+
+
+def flatten_multidimensional_arr(input_arr):
+    return_list = []
+    for item in input_arr:
+        if type(item) == list:
+            return_list += flatten_multidimensional_arr(item)
+        else:
+            return_list.append(item)
+    return return_list

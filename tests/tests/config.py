@@ -107,3 +107,28 @@ class ConfigParserTestCase(unittest.TestCase):
             type(typed_config["connections"][0]["config"]) ==
             config.connection.connection.LocalConnectionConfiguration
         )
+
+
+class ConfigAddressExpansionTestCase(unittest.TestCase):
+    def test_address_expanded_check(self):
+        assert(config.parser.is_address_string_expanded("address"))
+        assert(not config.parser.is_address_string_expanded("address[1-2]"))
+
+    def test_single_expansion(self):
+        addr_glob = "address[1-3]"
+        results = config.parser.expand_address_glob(addr_glob)
+        assert("address1" in results)
+        assert("address2" in results)
+        assert("address3" in results)
+        assert(len(results) == 3)
+
+    def test_multiple_expansion(self):
+        addr_glob = "address[1-3]-[1-2]"
+        results = config.parser.expand_address_glob(addr_glob)
+        assert("address1-1" in results)
+        assert("address2-1" in results)
+        assert("address3-1" in results)
+        assert("address1-2" in results)
+        assert("address2-2" in results)
+        assert("address3-2" in results)
+        assert(len(results) == 6)
