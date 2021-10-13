@@ -1,5 +1,5 @@
-import command.disk.write as write_command
 import check.check as check
+import command.disk.write as write_command
 
 
 class WriteCheck(check.Check):

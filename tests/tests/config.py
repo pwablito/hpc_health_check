@@ -1,12 +1,12 @@
-import unittest
-import config.file
 import check.disk.read
 import config.check.disk.read as read_check_config
 import config.check.net.ping
 import config.connection.connection
-import connection.local.local
+import config.file
 import config.parser
+import connection.local.local
 import error.config
+import unittest
 
 
 class ConfigFileTestCase(unittest.TestCase):

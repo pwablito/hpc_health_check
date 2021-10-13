@@ -1,7 +1,7 @@
 import connection.ssh.ssh as ssh_connection
 import error.ssh as ssh_error
-import util.totp as totp_util
 import paramiko
+import util.totp as totp_util
 
 
 class SSHTOTPConnection(ssh_connection.SSHConnection):

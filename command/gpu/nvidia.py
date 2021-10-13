@@ -1,6 +1,6 @@
 import command.command as command
-import io
 import csv
+import io
 
 
 class NvidiaSMICommand(command.Command):

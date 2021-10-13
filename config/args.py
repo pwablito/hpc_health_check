@@ -1,5 +1,5 @@
-import check.default as default_check
 import argparse
+import check.default as default_check
 
 
 def get_configuration():

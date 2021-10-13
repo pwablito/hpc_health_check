@@ -1,7 +1,7 @@
 import connection.connection as connection
 import error.command as command_error
-import subprocess
 import shutil
+import subprocess
 
 
 class LocalConnection(connection.Connection):

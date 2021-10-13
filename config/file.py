@@ -1,9 +1,9 @@
 import check.check
 import config.check.check
 import config.connection
+import config.parser
 import connection.connection
 import error.config
-import config.parser
 import json
 import logging
 

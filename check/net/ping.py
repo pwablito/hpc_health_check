@@ -1,6 +1,6 @@
 import check.check as check
-import util.math as math_util
 import command.net.ping as ping_command
+import util.math as math_util
 
 
 class PingCheck(check.Check):

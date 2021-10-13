@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 
-import connection.ssh.ssh as ssh_connection
-import connection.ssh.totp.totp as ssh_totp_connection
-import connection.local.local as local_connection
-import config.connection.connection as connection_config
 import check.default as default_check
-import error.command as command_error
-import tests.test as test
 import config.args as args_config
+import config.connection.connection as connection_config
 import config.file as config_file
 import config.parser as config_parser
+import connection.local.local as local_connection
+import connection.ssh.ssh as ssh_connection
+import connection.ssh.totp.totp as ssh_totp_connection
+import copy
+import dicttoxml
+import error.command as command_error
 import json
 import logging
+import tests.test as test
 import yaml
-import dicttoxml
-import copy
 
 
 def main():

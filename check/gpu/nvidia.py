@@ -1,5 +1,5 @@
-import command.gpu.nvidia as nvidia_command
 import check.check as check
+import command.gpu.nvidia as nvidia_command
 
 
 class NvidiaCheck(check.Check):

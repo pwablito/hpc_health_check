@@ -1,5 +1,5 @@
-import command.disk.read as read_command
 import check.check
+import command.disk.read as read_command
 
 
 class ReadCheck(check.check.Check):
