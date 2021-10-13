@@ -4,6 +4,7 @@ import check.disk.read
 import config.check.disk.read as read_check_config
 import config.check.net.ping
 import config.connection.connection
+import connection.local.local
 import config.parser
 import error.config
 
@@ -12,8 +13,8 @@ class ConfigFileTestCase(unittest.TestCase):
     def test_validate_config(self):
         config.file.validate_config_dict({
             "connections": [{
-                "type": "connection.local.local.LocalConnection",
-                "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
+                "type": connection.local.local.LocalConnection,
+                "config": config.connection.connection.LocalConnectionConfiguration()  # noqa: E501
             }],
             "checks": [
                 {
@@ -28,8 +29,8 @@ class ConfigFileTestCase(unittest.TestCase):
         with self.assertRaises(error.config.InvalidConfigurationException):
             config.file.validate_config_dict({
                 "connections": [{
-                    "type": "connection.local.local.LocalConnection",
-                    "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
+                    "type": connection.local.local.LocalConnection,
+                    "config": config.connection.connection.LocalConnectionConfiguration()  # noqa: E501
                 }],
                 "checks": [
                     {
@@ -42,8 +43,8 @@ class ConfigFileTestCase(unittest.TestCase):
         with self.assertRaises(error.config.MissingConfigurationException):
             config.file.validate_config_dict({
                 "connections": [{
-                    "type": "connection.local.local.LocalConnection",
-                    "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
+                    "type": connection.local.local.LocalConnection,
+                    "config": config.connection.connection.LocalConnectionConfiguration()  # noqa: E501
                 }],
                 "checks": [
                     {
@@ -55,8 +56,8 @@ class ConfigFileTestCase(unittest.TestCase):
         with self.assertRaises(error.config.InvalidConfigurationException):
             config.file.validate_config_dict({
                 "connections": [{
-                    "type": "connection.local.local.LocalConnection",
-                    "config": "config.connection.connection.LocalConnectionConfiguration()"  # noqa: E501
+                    "type": connection.local.local.LocalConnection,
+                    "config": config.connection.connection.LocalConnectionConfiguration()  # noqa: E501
                 }],
                 "checks": [
                     {
