@@ -10,6 +10,7 @@ def get_configuration():
     subparsers.add_parser("test")
     file_parser = subparsers.add_parser("file")
     file_parser.add_argument("filename", type=str)
+    add_output_format_argument(file_parser)
     local_parser = subparsers.add_parser("local")
     add_check_arg(local_parser)
     ssh_parser = subparsers.add_parser("ssh")
@@ -41,4 +42,15 @@ def add_check_arg(parser):
             for check_dict in default_check.get_default_checks()
         ],
         default='all'
+    )
+    add_output_format_argument(parser)
+
+
+def add_output_format_argument(parser):
+    parser.add_argument(
+        "--out",
+        help="Output format",
+        type=str,
+        choices=["json", "yaml", "xml"],
+        default="json"
     )

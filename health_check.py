@@ -11,6 +11,8 @@ import config.args as args_config
 import config.file as config_file
 import json
 import logging
+import yaml
+import dicttoxml
 
 
 def main():
@@ -81,8 +83,16 @@ def main():
                     "result": {"error": "Check not fully implemented"},
                     "connection": conn.get_runtime_meta(),
                 })
+    for conn in connections:
+        conn.close()
     if len(check_results):
-        print(json.dumps(check_results))
+        check_results = {"results": check_results}
+        if args.out == "json":
+            print(json.dumps(check_results))
+        elif args.out == "yaml":
+            print(yaml.dump(check_results))
+        elif args.out == "xml":
+            print(dicttoxml.dicttoxml(check_results))
 
 
 if __name__ == "__main__":
