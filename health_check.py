@@ -9,10 +9,12 @@ import error.command as command_error
 import tests.test as test
 import config.args as args_config
 import config.file as config_file
+import config.parser as config_parser
 import json
 import logging
 import yaml
 import dicttoxml
+import copy
 
 
 def main():
@@ -58,6 +60,23 @@ def main():
             if all_args or check_dict['name'] in args.check:
                 checks.append(check_dict)
     check_results = []
+    globbed_connections = []
+    for conn in connections:
+        if isinstance(
+            conn, ssh_connection.SSHConnection
+        ) and not config_parser.is_address_string_expanded(
+            conn.configuration.address
+        ):
+            globbed_addresses = config_parser.expand_address_string(
+                conn.configuration.address
+            )
+            for address in globbed_addresses:
+                new_connection = copy.deepcopy(conn)
+                new_connection.configuration.address = address
+                globbed_connections.append(new_connection)
+        else:
+            globbed_connections.append(conn)
+    connections = globbed_connections
     for conn in connections:
         conn.connect()
     for check in checks:
