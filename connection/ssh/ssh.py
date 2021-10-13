@@ -37,6 +37,8 @@ class SSHConnection(connection.Connection):
                 stdin.channel.shutdown_write()
             command.stdout = stdout.read()
             command.stderr = stderr.read()
+            if "not found" in command.stderr.decode().split('\n')[0].lower():
+                raise FileNotFoundError
         except FileNotFoundError:
             raise command_error.CommandNotFoundError
 
