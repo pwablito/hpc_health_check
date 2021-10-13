@@ -32,3 +32,8 @@ class LocalConnection(connection.Connection):
         process.wait()
         command.stdout = process.stdout.read()
         command.stderr = process.stderr.read()
+
+    def get_runtime_meta(self):
+        return {
+            "type": "local"
+        }

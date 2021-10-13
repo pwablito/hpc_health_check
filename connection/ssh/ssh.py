@@ -39,3 +39,10 @@ class SSHConnection(connection.Connection):
             command.stderr = stderr.read()
         except FileNotFoundError:
             raise command_error.CommandNotFoundError
+
+    def get_runtime_meta(self):
+        return {
+            "address": self.configuration.address,
+            "user": self.configuration.username,
+            "type": "ssh"
+        }

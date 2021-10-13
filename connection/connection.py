@@ -11,3 +11,6 @@ class Connection:
 
     def run_command(self, command):
         raise NotImplementedError
+
+    def get_runtime_meta(self):
+        raise NotImplementedError

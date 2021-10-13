@@ -66,17 +66,20 @@ def main():
                 check_inst.run()
                 check_results.append({
                     "name": check["name"],
-                    "result": check_inst.result
+                    "result": check_inst.result,
+                    "connection": conn.get_runtime_meta(),
                 })
             except command_error.CommandNotFoundError:
                 check_results.append({
                     "name": check["name"],
-                    "result": {"error": "Command not found"}
+                    "result": {"error": "Command not found"},
+                    "connection": conn.get_runtime_meta(),
                 })
             except NotImplementedError:
                 check_results.append({
                     "name": check["name"],
-                    "result": {"error": "Check not fully implemented"}
+                    "result": {"error": "Check not fully implemented"},
+                    "connection": conn.get_runtime_meta(),
                 })
     if len(check_results):
         print(json.dumps(check_results))
