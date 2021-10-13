@@ -52,5 +52,5 @@ def add_output_format_argument(parser):
         help="Output format",
         type=str,
         choices=["json", "yaml", "xml"],
-        default="json"
+        default="yaml"
     )
