@@ -2,3 +2,4 @@ paramiko
 pyotp
 flake8
 dicttoxml
+pyyaml
