@@ -4,8 +4,7 @@ import config.check.check
 class WriteCheckConfiguration(config.check.check.CheckConfiguration):
     working_dir = "/tmp"
 
-    def __init__(self, block_size_kb, size_mb, iodepth, time_sec):
+    def __init__(self, write_target, block_size_kb, count_k):
+        self.write_target = write_target
         self.block_size_kb = block_size_kb
-        self.size_mb = size_mb
-        self.iodepth = iodepth
-        self.time_sec = time_sec
+        self.count_k = count_k

@@ -21,7 +21,7 @@ class ConfigFileTestCase(unittest.TestCase):
                     "name": "test",
                     "check": check.disk.read.ReadCheck,
                     "config": read_check_config.ReadCheckConfiguration(
-                        16, 256, 16, 5
+                        "/dev/zero", 128, 8
                     )
                 }
             ]
@@ -93,7 +93,7 @@ class ConfigParserTestCase(unittest.TestCase):
                 {
                     "name": "test",
                     "check": "check.disk.read.ReadCheck",
-                    "config": "config.check.disk.read.ReadCheckConfiguration(16, 256, 16, 5)"  # noqa: E501
+                    "config": "config.check.disk.read.ReadCheckConfiguration(\"/dev/zero\", 128, 8)"  # noqa: E501
                 }
             ]
         }
