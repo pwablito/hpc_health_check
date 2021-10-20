@@ -13,6 +13,7 @@ def get_class_from_string(input_string):
 
 
 def process_item(item):
+    # TODO Add kwarg parsing here
     if item.strip('"') != item:
         return item.strip('"')
     if item.strip("'") != item:
@@ -27,6 +28,7 @@ def get_arguments_from_string(input_string):
     all_args = all_args[1].strip(')')
     if all_args == '':
         return []
+    # TODO Get kwargs from `process_item` and add them to call
     items = [process_item(item.strip()) for item in all_args.split(',')]
     return items if len(items) > 0 else None
 
