@@ -12,16 +12,14 @@ def get_class_from_string(input_string):
         raise ImportError
 
 
-def process_item(item):
-    # TODO Add kwarg parsing here
-    if item.strip('"') != item:
-        return item.strip('"')
-    if item.strip("'") != item:
-        return item.strip("'")
-    return int(item)
-
-
 def get_arguments_from_string(input_string):
+    def process_item(item):
+        # TODO Add kwarg parsing here
+        if item.strip('"') != item:
+            return item.strip('"')
+        if item.strip("'") != item:
+            return item.strip("'")
+        return int(item)
     all_args = input_string.split('(')
     if len(all_args) == 1:
         return None
