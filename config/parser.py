@@ -2,16 +2,6 @@ import importlib
 import re
 
 
-def get_class_from_string(input_string):
-    try:
-        class_path = input_string.split('(')[0]
-        module_path, class_name = class_path.rsplit('.', 1)
-        module = importlib.import_module(module_path)
-        return getattr(module, class_name)
-    except AttributeError:
-        raise ImportError
-
-
 def get_arguments_from_string(input_string):
     def process_item(item):
         # TODO Add kwarg parsing here
@@ -32,6 +22,14 @@ def get_arguments_from_string(input_string):
 
 
 def load_object_from_string(input_str):
+    def get_class_from_string(input_string):
+        try:
+            class_path = input_string.split('(')[0]
+            module_path, class_name = class_path.rsplit('.', 1)
+            module = importlib.import_module(module_path)
+            return getattr(module, class_name)
+        except AttributeError:
+            raise ImportError
     # TODO Add validation that it is valid python syntax first
     class_type = get_class_from_string(input_str)
     args = get_arguments_from_string(input_str)
