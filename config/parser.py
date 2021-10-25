@@ -42,7 +42,9 @@ def load_object_from_string(input_str):
 
 def expand_item_type(input_item):
     def expand_dict_types(input_dict):
-        return {key: expand_item_type(value) for key, value in input_dict.items()}
+        return {
+            key: expand_item_type(value) for key, value in input_dict.items()
+        }
 
     def expand_list_types(input_list):
         return [expand_item_type(item) for item in input_list]
@@ -84,14 +86,13 @@ def expand_address_string(input_str):
 
 
 def expand_address_glob(addr_glob):
+    def flatten_multidimensional_arr(input_arr):
+        return_list = []
+        for item in input_arr:
+            if type(item) == list:
+                return_list += flatten_multidimensional_arr(item)
+            else:
+                return_list.append(item)
+        return return_list
+
     return flatten_multidimensional_arr(expand_address_string(addr_glob))
-
-
-def flatten_multidimensional_arr(input_arr):
-    return_list = []
-    for item in input_arr:
-        if type(item) == list:
-            return_list += flatten_multidimensional_arr(item)
-        else:
-            return_list.append(item)
-    return return_list
