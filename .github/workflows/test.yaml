@@ -21,4 +21,5 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Run tests
       run: |
-        python health_check.py test
+        coverage run --omit '/usr/*' ./health_check.py test
+        coverage report
