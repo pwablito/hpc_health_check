@@ -9,6 +9,13 @@ class PingCheck(check.Check):
         for i in range(self.configuration.ping_tests):
             command = ping_command.PingCommand(self.configuration.ping_address)
             self.connection.run_command(command)
+            if self.connection.return_code != 0:
+                self.result = {
+                    "ping": {
+                        "error": "Nonzero exit code"
+                    }
+                }
+                return
             output = command.stdout.decode('utf-8')
             # TODO this is a very hacky way to parse the ping output
             time = None

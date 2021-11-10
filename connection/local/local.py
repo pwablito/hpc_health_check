@@ -30,6 +30,7 @@ class LocalConnection(connection.Connection):
             process.stdin.write(command.stdin.encode('utf-8'))
             process.stdin.close()
         process.wait()
+        command.return_code = process.returncode
         command.stdout = process.stdout.read()
         command.stderr = process.stderr.read()
 
