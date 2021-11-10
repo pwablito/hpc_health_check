@@ -32,6 +32,8 @@ class SSHConnection(connection.Connection):
         try:
             self.assert_client_connected()
             stdin, stdout, stderr = self.client.exec_command(command.command)
+            session = self.client.get_transport().open_session()
+            command.return_code = session.recv_exit_status()
             if command.stdin:
                 stdin.channel.send(command.stdin)
                 stdin.channel.shutdown_write()
