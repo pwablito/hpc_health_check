@@ -9,7 +9,7 @@ class PingCheck(check.Check):
         for i in range(self.configuration.ping_tests):
             command = ping_command.PingCommand(self.configuration.ping_address)
             self.connection.run_command(command)
-            if self.connection.return_code != 0:
+            if command.return_code != 0:
                 self.result = {
                     "ping": {
                         "error": "Nonzero exit code"
